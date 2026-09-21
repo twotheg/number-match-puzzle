@@ -1,0 +1,11 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.twotheg.number_match_puzzle",
+      "sha256_cert_fingerprints":
+        ["49:4B:1F:65:72:8A:4D:F8:C9:39:F5:95:42:7A:8B:21:88:B4:EA:08:68:26:BB:54:E6:CA:F2:E1:43:F2:6A:58"]
+    }
+  }
+]
