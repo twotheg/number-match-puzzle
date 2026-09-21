@@ -12,6 +12,7 @@
     "react": "latest",
     "react-dom": "latest",
     "tailwindcss": "latest",
+    "@tailwindcss/postcss": "latest",
     "pg": "latest"
   },
   "devDependencies": {
