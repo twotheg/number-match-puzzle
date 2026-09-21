@@ -18,12 +18,22 @@ export default function GamePage() {
   const [eliminated, setEliminated] = useState<string[]>([]);
   const [resultPopup, setResultPopup] = useState<History | null>(null);
 
-  // 멀티플레이용 상태
   const [createdCode, setCreatedCode] = useState('');
   const [joinCodeInput, setJoinCodeInput] = useState('');
   const [showingAd, setShowingAd] = useState(false);
 
-  // 싱글 게임 시작
+  useEffect(() => {
+    setSecret(generateRandomSecret());
+    
+    // 구글 애드센스 광고 실행
+    try {
+      (window as any).adsbygoogle = (window as any).adsbygoogle || [];
+      (window as any).adsbygoogle.push({});
+    } catch (e) {
+      console.error("AdSense Error: ", e);
+    }
+  }, []);
+
   const startSingleGame = () => {
     setMode('SINGLE');
     resetGameState(generateRandomSecret());
@@ -61,7 +71,6 @@ export default function GamePage() {
     if (strikes === 3) setIsCleared(true);
   };
 
-  // 힌트 (광고 시뮬레이션)
   const handleHint = () => {
     if (isCleared) return;
     const wrongDigits = ['0','1','2','3','4','5','6','7','8','9'].filter(d => !secret.includes(d) && !eliminated.includes(d));
@@ -75,13 +84,11 @@ export default function GamePage() {
     }
   };
 
-  // 멀티플레이 코드 생성
   const handleCreateCode = () => {
     if (input.length !== 3) return alert(lang === 'ko' ? "3자리를 모두 입력해주세요." : "Please enter 3 digits.");
     setCreatedCode(encodeRoomCode(input));
   };
 
-  // 코드로 게임 참가 (광고 2초 시청 연출)
   const handleJoinGame = () => {
     const decoded = decodeRoomCode(joinCodeInput.trim().toUpperCase());
     if (!decoded) {
@@ -95,14 +102,13 @@ export default function GamePage() {
       resetGameState(decoded);
       setScreen('PLAY');
       setJoinCodeInput('');
-    }, 2500); // 2.5초 광고
+    }, 2500); 
   };
 
   return (
     <div className="h-[100dvh] bg-[#FFF9F0] flex justify-center font-sans text-gray-800 overflow-hidden">
       <div className="w-full max-w-md bg-[#FFF9F0] h-full flex flex-col relative shadow-2xl">
         
-        {/* 상단 헤더 (공통) */}
         <div className="shrink-0 flex justify-between items-center p-4 pt-6 z-10 border-b border-gray-200 bg-white shadow-sm">
           <div className="flex items-center gap-2">
             {screen !== 'HOME' && (
@@ -115,7 +121,6 @@ export default function GamePage() {
           </button>
         </div>
 
-        {/* 광고 시청 풀스크린 오버레이 */}
         {showingAd && (
           <div className="absolute inset-0 bg-black/90 z-[100] flex flex-col items-center justify-center text-white">
             <span className="text-4xl mb-4 animate-spin">⏳</span>
@@ -124,7 +129,6 @@ export default function GamePage() {
           </div>
         )}
 
-        {/* 1. 홈(로비) 화면 */}
         {screen === 'HOME' && (
           <div className="flex-1 flex flex-col items-center justify-center p-6 gap-4">
             <div className="text-6xl mb-4">🕵️‍♂️</div>
@@ -140,7 +144,6 @@ export default function GamePage() {
           </div>
         )}
 
-        {/* 2. 친구에게 문제 내기 화면 */}
         {screen === 'CREATE_MULTI' && (
           <div className="flex-1 flex flex-col p-4">
             <div className="text-center mt-6 mb-8">
@@ -183,7 +186,6 @@ export default function GamePage() {
           </div>
         )}
 
-        {/* 3. 코드로 입장 화면 */}
         {screen === 'JOIN_MULTI' && (
           <div className="flex-1 flex flex-col items-center justify-center p-6">
             <div className="w-full bg-white p-6 rounded-2xl shadow-sm border border-gray-200 text-center">
@@ -202,10 +204,8 @@ export default function GamePage() {
           </div>
         )}
 
-        {/* 4. 플레이 화면 (이전 UI 그대로 통합) */}
         {screen === 'PLAY' && (
           <>
-            {/* 결과 팝업 */}
             {resultPopup && (
               <div className="absolute inset-0 bg-black/70 z-50 flex items-center justify-center p-6 backdrop-blur-sm cursor-pointer" onClick={() => setResultPopup(null)}>
                 <div className="bg-white p-6 rounded-3xl shadow-2xl text-center transform scale-105 transition-transform w-full max-w-[280px]">
@@ -225,7 +225,6 @@ export default function GamePage() {
               </div>
             )}
 
-            {/* 게임 내역 (스크롤 영역) */}
             <div className="flex-1 overflow-y-auto px-4 py-4 scrollbar-hide z-10">
               <div className="flex justify-center gap-2 mb-4">
                 {[0, 1, 2].map((idx) => (
@@ -259,7 +258,6 @@ export default function GamePage() {
               </div>
             </div>
 
-            {/* 하단 키패드 (고정) */}
             <div className="shrink-0 bg-white rounded-t-2xl border-t border-gray-200 p-4 pb-16 shadow-[0_-10px_20px_rgba(0,0,0,0.03)] z-10 relative">
               <div className="flex justify-between mb-3">
                 <button onClick={handleHint} className="flex-1 mr-1.5 bg-[#FFF4E5] text-[#D97706] py-2.5 rounded-lg font-bold text-sm shadow-sm active:scale-95 transition-transform">💡 {lang === 'ko' ? '광고 보고 힌트' : 'Ad Hint'}</button>
@@ -282,9 +280,12 @@ export default function GamePage() {
           </>
         )}
 
-        {/* 공통 하단 광고 배너 */}
-        <div className="absolute bottom-0 left-0 w-full h-[50px] bg-gray-100 flex items-center justify-center text-gray-400 text-[10px] font-bold border-t border-gray-200 z-50">
-          Google AdSense Banner (320x50)
+        {/* 실제 Google AdSense 광고 배너 영역 */}
+        <div className="absolute bottom-0 left-0 w-full h-[50px] bg-gray-100 flex items-center justify-center border-t border-gray-200 z-50 overflow-hidden">
+          <ins className="adsbygoogle"
+               style={{ display: 'inline-block', width: '320px', height: '50px' }}
+               data-ad-client="ca-pub-4424569297437395"
+               data-ad-slot="1234567890"></ins>
         </div>
       </div>
     </div>
