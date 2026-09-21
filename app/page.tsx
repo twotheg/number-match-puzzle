@@ -285,7 +285,7 @@ export default function GamePage() {
           <ins className="adsbygoogle"
                style={{ display: 'inline-block', width: '320px', height: '50px' }}
                data-ad-client="ca-pub-4424569297437395"
-               data-ad-slot="1234567890"></ins>
+               data-ad-slot="4315260852"></ins>
         </div>
       </div>
     </div>
