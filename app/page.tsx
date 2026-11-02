@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
+import Link from 'next/link'; // 푸터 링크용 추가
 import { checkGuess, generateRandomSecret, getFeedbackMessage, encodeRoomCode, decodeRoomCode } from '@/utils/gameLogic';
 
 type ScreenType = 'HOME' | 'PLAY' | 'CREATE_MULTI' | 'JOIN_MULTI';
@@ -130,17 +131,49 @@ export default function GamePage() {
         )}
 
         {screen === 'HOME' && (
-          <div className="flex-1 flex flex-col items-center justify-center p-6 gap-4">
-            <div className="text-6xl mb-4">🕵️‍♂️</div>
-            <button onClick={startSingleGame} className="w-full bg-gray-800 text-white py-4 rounded-2xl font-black text-lg shadow-md active:scale-95 transition-transform">
-              {lang === 'ko' ? '혼자 하기 (랜덤 문제)' : 'Single Player (Random)'}
-            </button>
-            <button onClick={() => { setScreen('CREATE_MULTI'); setInput(''); setCreatedCode(''); }} className="w-full bg-blue-500 text-white py-4 rounded-2xl font-black text-lg shadow-md active:scale-95 transition-transform">
-              {lang === 'ko' ? '친구에게 문제 내기' : 'Challenge a Friend'}
-            </button>
-            <button onClick={() => setScreen('JOIN_MULTI')} className="w-full bg-white border-2 border-gray-300 text-gray-800 py-4 rounded-2xl font-black text-lg shadow-sm active:bg-gray-50 active:scale-95 transition-transform">
-              {lang === 'ko' ? '초대 코드로 입장' : 'Enter with Code'}
-            </button>
+          <div className="flex-1 overflow-y-auto scrollbar-hide flex flex-col p-6">
+            <div className="flex flex-col items-center gap-4 mb-8 mt-4">
+              <div className="text-6xl mb-2">🕵️‍♂️</div>
+              <button onClick={startSingleGame} className="w-full bg-gray-800 text-white py-4 rounded-2xl font-black text-lg shadow-md active:scale-95 transition-transform">
+                {lang === 'ko' ? '혼자 하기 (랜덤 문제)' : 'Single Player (Random)'}
+              </button>
+              <button onClick={() => { setScreen('CREATE_MULTI'); setInput(''); setCreatedCode(''); }} className="w-full bg-blue-500 text-white py-4 rounded-2xl font-black text-lg shadow-md active:scale-95 transition-transform">
+                {lang === 'ko' ? '친구에게 문제 내기' : 'Challenge a Friend'}
+              </button>
+              <button onClick={() => setScreen('JOIN_MULTI')} className="w-full bg-white border-2 border-gray-300 text-gray-800 py-4 rounded-2xl font-black text-lg shadow-sm active:bg-gray-50 active:scale-95 transition-transform">
+                {lang === 'ko' ? '초대 코드로 입장' : 'Enter with Code'}
+              </button>
+            </div>
+
+            {/* 봇 심사 통과를 위한 텍스트 콘텐츠 영역 (가치가 별로 없는 콘텐츠 해결) */}
+            <div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 text-sm text-gray-600 leading-relaxed space-y-4 mb-8">
+              <h3 className="font-bold text-gray-800 text-base">📖 게임 이용 방법 (How to Play)</h3>
+              <p>
+                {lang === 'ko' ? '숫자 매칭 퍼즐(Number Match Puzzle)은 숨겨진 3자리 숫자를 논리적으로 추리하여 맞추는 두뇌 트레이닝 게임입니다. 각 숫자는 0부터 9까지 중복 없이 구성됩니다.' : 'Number Match Puzzle is a brain training game where you logically deduce a hidden 3-digit number. Each digit from 0-9 is used without duplicates.'}
+              </p>
+              <ul className="list-disc pl-5 space-y-1">
+                <li><strong>S (Strike):</strong> {lang === 'ko' ? '숫자가 정답에 포함되어 있고, 자리(위치)도 정확히 일치할 때' : 'Number is in the answer and in the correct position.'}</li>
+                <li><strong>B (Ball):</strong> {lang === 'ko' ? '숫자가 정답에 포함되어 있지만, 자리가 다를 때' : 'Number is in the answer but in the wrong position.'}</li>
+                <li><strong>OUT:</strong> {lang === 'ko' ? '입력한 3개의 숫자 중 정답에 포함된 숫자가 단 하나도 없을 때' : 'None of the entered numbers are in the answer.'}</li>
+              </ul>
+              <p>
+                {lang === 'ko' ? '최소한의 시도로 정답을 찾아내어 굳게 닫힌 자물쇠를 풀어보세요! 멀티플레이 모드를 통해 친구가 만든 비밀번호 코드를 직접 해독할 수도 있습니다.' : 'Find the answer with minimal attempts to unlock! Use multiplayer mode to decode passwords created by your friends.'}
+              </p>
+              
+              <h3 className="font-bold text-gray-800 text-base mt-4">💡 플레이 팁 (Tips)</h3>
+              <p>
+                {lang === 'ko' ? '처음에는 서로 다른 숫자들을 입력하여 어떤 숫자가 정답에 포함되어 있는지 파악하는 것이 중요합니다. 확실히 아닌 숫자는 광고 시청 힌트 기능을 통해 하나씩 제거해 나갈 수 있습니다.' : 'Input different digits initially to figure out which are included. Eliminate completely wrong numbers one by one using the ad hint feature.'}
+              </p>
+            </div>
+
+            {/* 애드센스 정책 준수를 위한 푸터 영역 */}
+            <footer className="mt-auto text-center text-xs text-gray-400 space-y-2 pb-16">
+               <p>© 2026 twotheg. All rights reserved.</p>
+               <p>Contact: <a href="mailto:이메일주소를입력하세요@gmail.com" className="hover:text-gray-600">이메일주소를입력하세요@gmail.com</a></p>
+               <Link href="/privacy" className="underline hover:text-gray-600 block pt-1">
+                 {lang === 'ko' ? '개인정보처리방침 (Privacy Policy)' : 'Privacy Policy'}
+               </Link>
+            </footer>
           </div>
         )}
 
@@ -284,8 +317,8 @@ export default function GamePage() {
         <div className="absolute bottom-0 left-0 w-full h-[50px] bg-gray-100 flex items-center justify-center border-t border-gray-200 z-50 overflow-hidden">
           <ins className="adsbygoogle"
                style={{ display: 'inline-block', width: '320px', height: '50px' }}
-               data-ad-client="ca-pub-4424569297437395"
-               data-ad-slot="4315260852"></ins>
+               data-ad-client="ca-pub-0000000000000000"
+               data-ad-slot="1234567890"></ins>
         </div>
       </div>
     </div>
