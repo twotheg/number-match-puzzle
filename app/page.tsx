@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-import Link from 'next/link'; // 푸터 링크용 추가
+import Link from 'next/link';
 import { checkGuess, generateRandomSecret, getFeedbackMessage, encodeRoomCode, decodeRoomCode } from '@/utils/gameLogic';
 
 type ScreenType = 'HOME' | 'PLAY' | 'CREATE_MULTI' | 'JOIN_MULTI';
@@ -26,7 +26,6 @@ export default function GamePage() {
   useEffect(() => {
     setSecret(generateRandomSecret());
     
-    // 구글 애드센스 광고 실행
     try {
       (window as any).adsbygoogle = (window as any).adsbygoogle || [];
       (window as any).adsbygoogle.push({});
@@ -145,7 +144,6 @@ export default function GamePage() {
               </button>
             </div>
 
-            {/* 봇 심사 통과를 위한 텍스트 콘텐츠 영역 (가치가 별로 없는 콘텐츠 해결) */}
             <div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 text-sm text-gray-600 leading-relaxed space-y-4 mb-8">
               <h3 className="font-bold text-gray-800 text-base">📖 게임 이용 방법 (How to Play)</h3>
               <p>
@@ -162,14 +160,13 @@ export default function GamePage() {
               
               <h3 className="font-bold text-gray-800 text-base mt-4">💡 플레이 팁 (Tips)</h3>
               <p>
-                {lang === 'ko' ? '처음에는 서로 다른 숫자들을 입력하여 어떤 숫자가 정답에 포함되어 있는지 파악하는 것이 중요합니다. 확실히 아닌 숫자는 광고 시청 힌트 기능을 통해 하나씩 제거해 나갈 수 있습니다.' : 'Input different digits initially to figure out which are included. Eliminate completely wrong numbers one by one using the ad hint feature.'}
+                {lang === 'ko' ? '처음에는 서로 다른 숫자들을 입력하여 어떤 숫자가 정답에 포함되어 있는지 파악하는 파악하는 것이 중요합니다. 확실히 아닌 숫자는 광고 시청 힌트 기능을 통해 하나씩 제거해 나갈 수 있습니다.' : 'Input different digits initially to figure out which are included. Eliminate completely wrong numbers one by one using the ad hint feature.'}
               </p>
             </div>
 
-            {/* 애드센스 정책 준수를 위한 푸터 영역 */}
             <footer className="mt-auto text-center text-xs text-gray-400 space-y-2 pb-16">
                <p>© 2026 twotheg. All rights reserved.</p>
-               <p>Contact: <a href="mailto:이메일주소를입력하세요@gmail.com" className="hover:text-gray-600">이메일주소를입력하세요@gmail.com</a></p>
+               <p>Contact: <a href="mailto:twotheg@gmail.com" className="hover:text-gray-600">twotheg@gmail.com</a></p>
                <Link href="/privacy" className="underline hover:text-gray-600 block pt-1">
                  {lang === 'ko' ? '개인정보처리방침 (Privacy Policy)' : 'Privacy Policy'}
                </Link>
@@ -313,12 +310,11 @@ export default function GamePage() {
           </>
         )}
 
-        {/* 실제 Google AdSense 광고 배너 영역 */}
         <div className="absolute bottom-0 left-0 w-full h-[50px] bg-gray-100 flex items-center justify-center border-t border-gray-200 z-50 overflow-hidden">
           <ins className="adsbygoogle"
                style={{ display: 'inline-block', width: '320px', height: '50px' }}
-               data-ad-client="ca-pub-0000000000000000"
-               data-ad-slot="1234567890"></ins>
+               data-ad-client="ca-pub-4424569297437395"
+               data-ad-slot="4315260852"></ins>
         </div>
       </div>
     </div>
